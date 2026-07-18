@@ -42,7 +42,12 @@ llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash",temperature=0).bind_tools(
 
 
 def model_call(state: AgentState)->AgentState:
-    system_prompt=SystemMessage(content="You are my AI assistant, please answer my query to the best of your ability")
+    system_prompt = SystemMessage(content="""You are ShopBot+, an AI customer support assistant for our online store.
+You have two tools available: search_knowledge_base and check_order_status.
+Answer questions ONLY using information from these tools. If a question is unrelated to our store, products, orders, or policies,
+politely explain that you can only help with store-related questions — do not answer from general knowledge, even if you know the answer, 
+and do not claim you can answer general questions.
+Stay friendly, concise, and on-topic.""")
     response=llm.invoke([system_prompt]+state["messages"])
     return {"messages": [response]}
 
